@@ -19,7 +19,6 @@ return {
           if (not status) then return end
           local api = vim.api
           local lsp_defaults = lspconfig.util.default_config
-          -- TODO: 疑问: after 文件夹下的文件会在每次打开 nvim 时候都运行一次么
           lsp_defaults.capabilities = vim.tbl_deep_extend(
             'force',
             lsp_defaults.capabilities,
@@ -37,43 +36,27 @@ return {
           --     fallbackFlags = { "-x", "c" }, -- 设置只用c的标准，不是cpp或者object c的标准一起用
           --   },
           --   filetypes = { "c", "h"},
-          --   cmd = {
-          --     "clangd",
-          --     "--enable-config",
-          --     "--suggest-missing-includes",
-          --     "--background-index", -- 后台建立索引，并持久化到disk
-          --     "--clang-tidy", -- 开启clang-tidy
-          --     "--clang-tidy-checks=performance-*,bugprone-*",
-          --     "--completion-style=detailed",
-          --     "--cross-file-rename=true",
-          --     "--header-insertion=iwyu",
-          --     "--pch-storage=memory",
-          --     "--function-arg-placeholders=false",
-          --     "--ranking-model=decision_forest",
-          --     "--header-insertion-decorators",
-          --     "--pretty",
-          --     "--all-scopes-completion",
-          --   },
           -- }
 
           lspconfig.clangd.setup {
             filetypes = { "cpp", "objc", "objcpp", "cuda", "proto", "hpp" },
             cmd = {
               "clangd",
-              "--enable-config",
-              "--suggest-missing-includes",
-              "--background-index", -- 后台建立索引，并持久化到disk
-              "--clang-tidy",       -- 开启clang-tidy
-              "--clang-tidy-checks=performance-*,bugprone-*",
+              "--all-scopes-completion=true",
+              "--background-index",
+              "--background-index-priority=normal",
+              "--clang-tidy",
               "--completion-style=detailed",
-              "--cross-file-rename=true",
+              "--function-arg-placeholders=true",
               "--header-insertion=iwyu",
-              "--pch-storage=memory",
-              "--function-arg-placeholders=false",
-              "--ranking-model=decision_forest",
               "--header-insertion-decorators",
+              "--import-insertions",
+              "--enable-config",
+              "-j=32",
+              "--malloc-trim",
+              "--pch-storage=memory",
+              "--log=error",
               "--pretty",
-              "--all-scopes-completion",
             },
           }
           api.nvim_create_autocmd('LspAttach', {
@@ -83,6 +66,10 @@ return {
               end
 
               keybind('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
+              keybind('n', '``', '<cmd>lua vim.lsp.buf.format()<cr>')
+              -- keybind('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+              -- keybind('n', ';d', '<cmd>lua vim.lsp.buf.definition()<cr>')
+              -- keybind('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
             end
           })
         end,
@@ -230,20 +217,4 @@ return {
       ]]
     end
   },
-  -- {
-  --   "williamboman/mason.nvim",
-  --   lazy = false,
-  --   opts = function(_, opts)
-  --     vim.list_extend(opts.ensure_installed, {
-  --       "stylua",
-  --       "selene",
-  --       "luacheck",
-  --       "shellcheck",
-  --       "shfmt",
-  --       "tailwindcss-language-server",
-  --       "typescript-language-server",
-  --       "css-lsp",
-  --     })
-  --   end,
-  -- },
 }

@@ -1,6 +1,3 @@
--- TODO:
--- - [ ] cmake 文件专用查找
-
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -13,8 +10,35 @@ return {
         function() builtin.find_files({ hidden = true }) end,
         desc = "Lists files in your current working directory, respects .gitignore"
       }
+      local goto_definition = {
+        ";d",
+        function() builtin.lsp_definitions() end,
+        desc =
+        "Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope"
+      }
+      local goto_type_definition = {
+        ";t",
+        function() builtin.lsp_type_definitions() end,
+        desc =
+        "Goto the type definition of the word under the cursor, if there's only one, otherwise show all options in Telescope"
+      }
+      local goto_incoming_calls = {
+        ";r",
+        function() builtin.lsp_incoming_calls() end,
+        desc = "Lists all references to the word under the cursor"
+      }
+      local jump_list = {
+        ";j",
+        function() builtin.jumplist() end,
+        desc = "Lists the jumplist"
+      }
+      local goto_outgoing_calls = {
+        ";u",
+        function() builtin.lsp_outgoing_calls() end,
+        desc = "Lists all references to the word under the cursor"
+      }
       local find_open_files = {
-        "<C-o>",
+        "<C-e>",
         function() builtin.buffers() end,
         desc = "Lists open buffers",
       }
@@ -29,10 +53,21 @@ return {
         function() builtin.diagnostics({ bufnr = 0 }) end,
         desc = "Lists Diagnostics for all open buffers or a specific buffer",
       }
+      local show_normal_key_map = {
+        "sk",
+        function() builtin.keymaps() end,
+        desc = "Lists normal mode keymappings"
+      }
       table.insert(keys, find_files)
       table.insert(keys, find_open_files)
       table.insert(keys, find_variables)
       table.insert(keys, find_warnings)
+      table.insert(keys, goto_definition)
+      table.insert(keys, goto_type_definition)
+      table.insert(keys, goto_incoming_calls)
+      table.insert(keys, goto_outgoing_calls)
+      table.insert(keys, show_normal_key_map)
+      table.insert(keys, jump_list)
     end,
     dependencies = {
       {
@@ -166,4 +201,33 @@ return {
       lualine.setup(config)
     end
   },
+  {
+    "williamboman/mason.nvim",
+    name = "mason",
+    config = function()
+      require("mason").setup()
+    end
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    name = "mason-lspconfig",
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "bashls",
+          "cmake",
+          "dockerls",
+          "gopls",
+          "html",
+          "jsonls",
+          "pyright",
+          "rust_analyzer",
+          "lua_ls",
+          "tsserver",
+          "vimls",
+          "yamlls",
+        },
+      })
+    end
+  }
 }

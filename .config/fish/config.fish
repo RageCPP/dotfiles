@@ -1,5 +1,6 @@
 if status is-interactive
   alias cat "bat"
+  alias bit "ghq"
   # 桌面版本 linux 需要安装trash-rm
   # alias rm "trash-rm"
 end
