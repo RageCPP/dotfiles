@@ -22,8 +22,13 @@ return {
         desc =
         "Goto the type definition of the word under the cursor, if there's only one, otherwise show all options in Telescope"
       }
+      local show_symbol = {
+        "lk",
+        function() builtin.lsp_document_symbols() end,
+        desc = "Lists all symbols in the current buffer"
+      }
       local goto_incoming_calls = {
-        ";r",
+        "lr",
         function() builtin.lsp_incoming_calls() end,
         desc = "Lists all references to the word under the cursor"
       }
@@ -33,7 +38,7 @@ return {
         desc = "Lists the jumplist"
       }
       local goto_outgoing_calls = {
-        ";u",
+        "lu",
         function() builtin.lsp_outgoing_calls() end,
         desc = "Lists all references to the word under the cursor"
       }
@@ -68,6 +73,7 @@ return {
       table.insert(keys, goto_outgoing_calls)
       table.insert(keys, show_normal_key_map)
       table.insert(keys, jump_list)
+      table.insert(keys, show_symbol)
     end,
     dependencies = {
       {

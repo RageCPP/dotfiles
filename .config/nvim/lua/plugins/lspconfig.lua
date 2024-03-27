@@ -9,6 +9,7 @@ return {
       { "hrsh7th/cmp-cmdline" },
       { "hrsh7th/cmp-vsnip" },
       { "hrsh7th/vim-vsnip" },
+      { "hrsh7th/cmp-nvim-lsp-signature-help" },
       {
         "neovim/nvim-lspconfig",
         name = "lspconfig",
@@ -67,8 +68,8 @@ return {
 
               keybind('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
               keybind('n', '``', '<cmd>lua vim.lsp.buf.format()<cr>')
-              -- keybind('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-              -- keybind('n', ';d', '<cmd>lua vim.lsp.buf.definition()<cr>')
+              keybind('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+              keybind('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
               -- keybind('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
             end
           })
