@@ -26,7 +26,7 @@ return {
             cmp_nvim_lsp.default_capabilities()
           )
           -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-          local open_servers = { 'clangd', 'lua_ls', "neocmake", "rust_analyzer", "tsserver", "bashls", "postgres_lsp" }
+          local open_servers = { 'clangd', 'lua_ls', "cmake", "rust_analyzer", "tsserver", "bashls", "postgres_lsp" }
 
           for _, lsp in ipairs(open_servers) do
             lspconfig[lsp].setup({})
