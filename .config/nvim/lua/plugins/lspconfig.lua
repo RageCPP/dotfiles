@@ -26,19 +26,25 @@ return {
             cmp_nvim_lsp.default_capabilities()
           )
           -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-          local open_servers = { 'clangd', 'cmake', 'lua_ls', "rust_analyzer", "tsserver", "bashls" }
+          local open_servers = { 'clangd', 'lua_ls', "neocmake", "rust_analyzer", "tsserver", "bashls", "postgres_lsp" }
 
           for _, lsp in ipairs(open_servers) do
             lspconfig[lsp].setup({})
           end
+          lspconfig.postgres_lsp.setup = {
+            name = 'postgres_lsp',
+            cmd = { 'postgres_lsp' },
+            filetypes = { 'sql' },
+            single_file_support = true,
+            root_dir = lspconfig.util.root_pattern 'root-file.txt'
+          }
           -- clangd
           -- lspconfig.clangd.setup {
           --   init_options = {
           --     fallbackFlags = { "-x", "c" }, -- 设置只用c的标准，不是cpp或者object c的标准一起用
           --   },
           --   filetypes = { "c", "h"},
-          -- }
-
+          --
           lspconfig.clangd.setup {
             filetypes = { "cpp", "objc", "objcpp", "cuda", "proto", "hpp" },
             cmd = {
