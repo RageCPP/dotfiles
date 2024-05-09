@@ -57,7 +57,6 @@ return {
               "--function-arg-placeholders=true",
               "--header-insertion=iwyu",
               "--header-insertion-decorators",
-              "--import-insertions",
               "--enable-config",
               "-j=32",
               "--malloc-trim",
